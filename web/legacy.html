@@ -1,0 +1,71 @@
+
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="PlyMotion 首页"><img src="icon.svg" alt=""><span>PlyMotion</span></a>
+    <span class="section-tab">棋局分析 <span class="version">PREVIEW</span></span>
+    <div class="header-actions"><span class="local-pill"><i></i> 本地分析</span><button id="openImport" class="primary"><span class="material-icon" data-material-icon="file_upload" aria-hidden="true"></span>载入 PGN</button></div>
+  </header>
+  <main>
+    <div class="workspace">
+      <section class="board-panel" aria-label="棋盘与播放控制">
+        <div class="board-wrap"><div class="board-viewport"><div id="board" role="img" aria-label="国际象棋棋盘"></div><svg class="camera-viewport" viewBox="0 0 8 8" role="img" aria-label="摄像头取景范围" focusable="false" hidden><polygon class="camera-viewport-shadow" /><polygon class="camera-viewport-outline" /></svg></div></div>
+        <div class="playback"><button id="flip" class="icon-button" title="翻转棋盘" aria-label="翻转棋盘"><span class="material-icon" data-material-icon="swap_horiz" aria-hidden="true"></span></button><div class="transport"><button id="first" title="回到开始" aria-label="回到开始"><span class="material-icon" data-material-icon="first_page" aria-hidden="true"></span></button><button id="prev" title="上一步" aria-label="上一步"><span class="material-icon icon-reverse" data-material-icon="chevron_right" aria-hidden="true"></span></button><button id="framePrev" aria-label="上一帧" title="上一帧"><span class="material-icon" data-material-icon="skip_previous" aria-hidden="true"></span></button><button id="play" class="play-button" title="播放 / 暂停" aria-label="播放"><span class="material-icon" data-material-icon="play_arrow" aria-hidden="true"></span></button><button id="frameNext" aria-label="下一帧" title="下一帧"><span class="material-icon" data-material-icon="skip_next" aria-hidden="true"></span></button><button id="next" title="下一步" aria-label="下一步"><span class="material-icon" data-material-icon="chevron_right" aria-hidden="true"></span></button><button id="last" title="跳到结尾" aria-label="跳到结尾"><span class="material-icon" data-material-icon="last_page" aria-hidden="true"></span></button></div><button id="replayMove" class="icon-button" title="重播这一手" aria-label="重播这一手"><span class="material-icon" data-material-icon="replay" aria-hidden="true"></span></button></div>
+      </section>
+      <aside class="analysis-panel">
+        <div class="game-details"><p id="eventName">导入棋谱，发现关键着法。</p><span id="gameResult" class="result-pill">—</span></div>
+        <div class="game-players"><div class="player"><span class="avatar black">♟</span><div><strong id="topPlayer">Black</strong><span id="topSide">黑方</span></div><span id="topAccuracy" class="accuracy">—<small>准确率</small></span></div>
+        <div class="player"><span class="avatar white">♟</span><div><strong id="bottomPlayer">White</strong><span id="bottomSide">白方</span></div><span id="bottomAccuracy" class="accuracy">—<small>准确率</small></span></div></div>
+        <div class="game-score"><span>局面评分</span><div class="eval-track"><div id="evalFill"></div></div><strong id="evalText">—</strong><span id="positionCount">0 / 0</span></div>
+        <section id="reviewStats" class="review-stats" aria-label="双方着法分类统计" hidden>
+          <table><thead><tr><th scope="col">分类</th><th scope="col">白方</th><td aria-hidden="true"></td><th scope="col">黑方</th></tr></thead><tbody id="reviewStatsBody"></tbody></table>
+        </section>
+        <div class="engine-controls"><label for="depth">分析深度</label><select id="depth"><option value="8">8 · 快速预览</option><option value="12" selected>12 · 标准分析</option><option value="16">16 · 深入分析</option></select><button id="analyze" class="primary">开始分析</button></div>
+        <div class="status-row"><span id="engineStatus" role="status">Stockfish 18 · 就绪</span><span id="progressText">等待分析</span></div><progress id="progress" max="1" value="0" aria-label="分析进度"></progress>
+        <div class="move-table-heading"><span>#</span><span>白方</span><span>黑方</span></div><div id="moves" class="move-list" aria-label="棋谱着法列表"></div>
+        <div class="panel-foot"><span id="opening">—</span><span id="nagSource">引擎标记</span></div>
+      </aside>
+    </div>
+    <p id="message" class="toast" role="status" hidden></p>
+  </main>
+  <dialog id="importDialog" aria-labelledby="importTitle"><form id="importForm"><div class="dialog-heading"><h2 id="importTitle">导入棋谱</h2><button type="button" id="closeImport" aria-label="关闭"><span class="material-icon" data-material-icon="close" aria-hidden="true"></span></button></div><p>粘贴 PGN 或打开本地文件。支持主线、FEN 起始局面和原始 NAG 注释。</p><label for="pgn" class="sr-only">PGN 棋谱</label><textarea id="pgn" spellcheck="false" placeholder='[White "White"]&#10;[Black "Black"]&#10;&#10;1. e4 e5 2. Nf3 Nc6 *'></textarea><p id="importError" role="alert"></p><div class="dialog-actions"><button type="button" id="fileButton">打开 .pgn 文件</button><button type="button" id="sampleButton" class="text-button">使用示例</button><button type="submit" id="importLoad">载入棋谱</button><button type="submit" id="importAnalyze" class="primary">载入并分析</button></div><input id="pgnFile" type="file" accept=".pgn,text/plain" hidden></form></dialog>
+  <input id="projectFile" type="file" accept=".plymotion,application/json" hidden>
+  <dialog id="unsavedDialog" aria-labelledby="unsavedTitle"><form method="dialog"><h2 id="unsavedTitle">保存工程修改？</h2><p>当前工程有未保存的修改。保存成功后才能继续；不保存将丢弃这些修改。</p><div class="dialog-actions"><button value="cancel" autofocus>取消</button><button value="discard">不保存</button><button value="save" class="primary">保存并继续</button></div></form></dialog>
+  <dialog id="videoDialog" aria-labelledby="videoTitle">
+    <form id="videoForm">
+      <div class="dialog-heading"><h2 id="videoTitle">导出棋谱视频</h2><button type="button" id="closeVideo" aria-label="关闭视频导出"><span class="material-icon" data-material-icon="close" aria-hidden="true"></span></button></div>
+      <p class="video-summary">导出当前工程的棋盘、视觉编辑、动效、NAG 与终局标记，可选择显示双方名称、当前走法和引擎评分。导出使用开始时的工程快照，可继续编辑。格式为 MP4（H.264）。</p>
+      <div class="video-layout">
+      <section id="videoPreview" class="video-preview" aria-label="视频预览">
+        <div class="video-preview-frame"></div>
+        <div class="video-preview-controls">
+          <button type="button" id="videoPreviewReplay" aria-label="视频预览回到开始" title="回到开始" disabled><span class="material-icon" data-material-icon="replay" aria-hidden="true"></span></button>
+          <button type="button" id="videoPreviewPlay" aria-label="播放视频预览" title="播放视频预览" aria-pressed="false" disabled><span class="material-icon" data-material-icon="play_arrow" aria-hidden="true"></span></button>
+          <input id="videoPreviewSeek" type="range" min="0" max="0" value="0" step="any" aria-label="视频预览进度" disabled>
+          <output id="videoPreviewTime" aria-label="视频预览时间">0.000 / 0.000 s</output>
+        </div>
+        <p class="video-preview-status" role="status" hidden></p>
+      </section>
+      <fieldset id="videoFields" class="video-fields">
+        <label class="video-wide">画面比例与分辨率<select id="videoPreset"><option value="1080x1080">方形 · 1080 × 1080</option><option value="1920x1080">横屏 · 1920 × 1080</option><option value="1080x1920">竖屏 · 1080 × 1920</option><option value="1280x720">横屏 · 1280 × 720</option><option value="720x1280">竖屏 · 720 × 1280</option><option value="3840x2160">横屏 4K · 3840 × 2160</option><option value="2160x3840">竖屏 4K · 2160 × 3840</option><option value="custom">自定义</option></select></label>
+        <label>宽度（像素）<input id="videoWidth" type="number" min="256" max="3840" step="2" value="1080" required></label>
+        <label>高度（像素）<input id="videoHeight" type="number" min="256" max="3840" step="2" value="1080" required></label>
+        <label>帧率<select id="videoFps"><option>24</option><option>25</option><option selected>30</option><option>50</option><option>60</option></select></label>
+        <label>画质（CRF，越低越清晰）<input id="videoCrf" type="number" min="0" max="40" step="1" value="23" required></label>
+        <label>码率（kbps，0 为自动）<input id="videoBitrate" type="number" min="0" max="100000" step="100" value="0" required></label>
+
+        <label class="video-wide video-check"><input id="videoShowNames" type="checkbox" checked> 显示双方名字</label>
+        <label class="video-wide video-check"><input id="videoShowMove" type="checkbox" checked> 显示当前走法</label>
+        <label class="video-wide video-check"><input id="videoShowEvaluation" type="checkbox" aria-describedby="videoEvaluationHint"> 显示引擎评分</label>
+        <p id="videoEvaluationHint" class="video-wide video-hint">左侧评分条使用当前工程的引擎分析结果，需先在「棋局」面板完成分析。</p>
+        <label class="video-wide video-check"><input id="videoSound" type="checkbox" checked> 包含走子、吃子音效</label>
+      </fieldset>
+      </div>
+      <p id="videoEstimate"></p><p class="video-hint">自定义尺寸须为偶数，总像素最多 4K；单次最长 10 分钟。指定码率时取代画质设置。导出使用本机 FFmpeg。</p>
+      <progress id="videoProgress" max="1" value="0" aria-label="视频导出进度" hidden></progress>
+      <dl id="videoMetrics" class="video-metrics" aria-label="视频导出速度与预计剩余时间" hidden>
+        <div><dt>速度</dt><dd id="videoSpeed">—</dd></div>
+        <div><dt>预计剩余</dt><dd id="videoEta">—</dd></div>
+      </dl>
+      <p id="videoStatus" role="status" aria-live="polite"></p>
+      <div class="dialog-actions"><button type="button" id="cancelVideo" hidden>取消导出</button><button type="submit" id="startVideo" class="primary">选择保存位置并导出</button></div>
+    </form>
+  </dialog>

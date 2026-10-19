@@ -1,0 +1,7 @@
+/bundles/web/images/image-default.svg
+bundles/web/images/user-image.svg
+/bundles/web/images/hand-strokeless.svg
+/bundles/web/images/boxing_glove.svg
+${i.value}/color-icons/${t.name}.svg
+${i.value}/glyphs/${t.name}.svg
+/bundles/web/images/user-image.svg

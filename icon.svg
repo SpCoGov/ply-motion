@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="886" height="769" viewBox="175 239 886 769" fill="none" role="img" aria-labelledby="title">
+  <title id="title">Blue gradient horse icon</title>
+  <defs>
+    <linearGradient id="crest" x1="464" y1="378" x2="794" y2="258" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#54f5e9"/>
+      <stop offset=".45" stop-color="#00cbd9"/>
+      <stop offset="1" stop-color="#00a3d1"/>
+    </linearGradient>
+    <linearGradient id="mane1" x1="253" y1="489" x2="643" y2="441" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a4faf2"/>
+      <stop offset=".45" stop-color="#00d3e0"/>
+      <stop offset="1" stop-color="#009fe9"/>
+    </linearGradient>
+    <linearGradient id="mane2" x1="185" y1="631" x2="580" y2="576" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#94f8f0"/>
+      <stop offset=".4" stop-color="#00d1e9"/>
+      <stop offset="1" stop-color="#0095ff"/>
+    </linearGradient>
+    <linearGradient id="mane3" x1="193" y1="773" x2="585" y2="706" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a0f3f5"/>
+      <stop offset=".5" stop-color="#00b9f0"/>
+      <stop offset="1" stop-color="#007aff"/>
+    </linearGradient>
+    <linearGradient id="mane4" x1="248" y1="909" x2="601" y2="810" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#b4f6f8"/>
+      <stop offset=".4" stop-color="#00b8f2"/>
+      <stop offset="1" stop-color="#006fff"/>
+    </linearGradient>
+    <linearGradient id="horse" x1="670" y1="345" x2="1020" y2="649" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00bdc7"/>
+      <stop offset=".34" stop-color="#007fba"/>
+      <stop offset=".67" stop-color="#0454a1"/>
+      <stop offset="1" stop-color="#042b73"/>
+    </linearGradient>
+    <linearGradient id="neck" x1="615" y1="827" x2="949" y2="718" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#007aff" stop-opacity=".95"/>
+      <stop offset=".55" stop-color="#0043cb" stop-opacity=".7"/>
+      <stop offset="1" stop-color="#00238d" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="base" x1="414" y1="984" x2="979" y2="913" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#98e9f5"/>
+      <stop offset=".32" stop-color="#00acfa"/>
+      <stop offset=".61" stop-color="#006bef"/>
+      <stop offset="1" stop-color="#03258a"/>
+    </linearGradient>
+    <path id="silhouette" d="M879.5 253.5 C851 266 827 284 808 301 C702 349 643 421 622 509 C607 570 619 630 635 691 C653 753 648 799 627 842 C617 864 602 884 587 898 C700 847 834 806 945 865 C963 806 922 727 881 682 C846 642 799 611 782 565 C768 530 768 504 785 476 C786 517 806 543 841 549 C875 554 900 542 928 558 C955 573 962 608 980 618 C997 627 1023 615 1036 600 C1061 573 1058 535 1037 510 L962 423 C939 397 932 374 910 355 C890 338 879 339 879.5 312 Z"/>
+  </defs>
+  <g id="horse-mark">
+    <path fill="url(#crest)" d="M806 246 C687 258 568 305 482 360 C450 381 457 389 486 384 C550 374 617 356 680 337 C719 301 760 273 806 246Z"/>
+    <path fill="url(#mane1)" d="M642 381 C534 414 413 446 310 466 C273 473 255 487 252 503 C248 521 264 529 293 528 C398 523 524 491 597 455 C609 430 625 401 642 381Z"/>
+    <path fill="url(#mane2)" d="M581 505 C462 555 338 583 239 599 C203 605 184 620 182.5 638 C181 657 195 665 223 664 C329 661 475 627 571.5 583 C571 555 576 529 581 505Z"/>
+    <path fill="url(#mane3)" d="M575 628 C460 680 341 715 244 736 C210 743 191 761 190.5 778 C189 797 205 807 234 806 C340 803 487 758 591 702 C583 677 578 652 575 628Z"/>
+    <path fill="url(#mane4)" d="M600 747 C507 804 397 841 297 865 C267 872 248 886 245.5 905 C243 925 260 936 290 935.5 C373 935 487 903 542 872 C585 849 607 801 600 747Z"/>
+    <use href="#silhouette" fill="url(#horse)"/>
+    <use href="#silhouette" fill="url(#neck)"/>
+    <path fill="url(#base)" d="M414 992 C558 957 670 893 786 877 C852 867 913 877 953 899 C981 914 991 936 986 960 C982 979 970 998 955 1000 C948 1002 940 996 927 990 C833 944 731 966 594 991 C528 1003 470 1004 414 992Z"/>
+  </g>
+</svg>

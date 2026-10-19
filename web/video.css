@@ -1,0 +1,18 @@
+.video-fields{border:0;padding:0;margin:18px 0;display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.video-fields label{display:flex;flex-direction:column;gap:7px;color:var(--muted);font-size:12px}
+.video-fields input[type=number],.video-fields select{width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:7px;background:var(--bg);color:var(--text);font:inherit}
+.video-wide{grid-column:1/-1}.video-fields .video-check{flex-direction:row;align-items:center}.video-check input{accent-color:var(--accent)}
+#videoDialog{width:min(1060px,92vw);max-height:90vh;overflow-y:auto}#videoProgress{width:100%;margin:8px 0}#videoStatus{min-height:22px;overflow-wrap:anywhere}#videoStatus.error{color:#ffaaa0}#videoEstimate{color:var(--accent)}
+#videoDialog .video-hint{font-size:11px}#videoFields:disabled{opacity:.55}
+.video-metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:8px 0}.video-metrics[hidden]{display:none}.video-metrics dt{font-size:11px;color:var(--muted)}.video-metrics dd{margin:5px 0 0;font:12px Consolas,"Microsoft YaHei",monospace;font-variant-numeric:tabular-nums;color:var(--text)}
+.video-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:24px;align-items:start}.video-layout .video-fields{margin:0}
+.video-preview{min-width:0}.video-preview-frame{height:min(48vh,440px);background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.video-preview-frame canvas{display:block;width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain}
+.video-preview-controls{display:flex;align-items:center;gap:8px;margin-top:10px}.video-preview-controls button{display:flex;align-items:center;justify-content:center;width:30px;height:30px;padding:0;flex:none}
+.video-preview-controls input{flex:1;min-width:0;accent-color:var(--accent)}.video-preview-controls output{font:11px Consolas,monospace;color:var(--muted);white-space:nowrap}.video-preview-status{margin:8px 0}
+@media(max-width:760px){.video-layout{grid-template-columns:1fr}.video-preview-frame{height:32vh}}
+/* Fixed layout for frame export, independent of window size and responsive UI. */
+.export-board{position:fixed;left:-10000px;top:0;width:640px;height:640px;display:grid;grid-template-columns:repeat(8,1fr);isolation:isolate;pointer-events:none}
+/* Export progress leaves the workspace available while its snapshot renders. */
+#videoDialog:not(:modal){position:fixed;inset:auto 16px 16px auto;margin:0;width:min(400px,calc(100vw - 32px));padding:16px;z-index:1000}
+#videoDialog:not(:modal) :is(.video-summary,.video-hint,.video-layout,#videoEstimate,#startVideo){display:none}

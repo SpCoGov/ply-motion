@@ -1,0 +1,6 @@
+<text 
+          x="${a*.94+a*r}" 
+          y="${a*.92+a*t}" 
+          font-size="2.8"
+          text-anchor="end"
+          class="coordinate-${(t+r)%2==0?`light`:`dark`}">${n}${e}</text>

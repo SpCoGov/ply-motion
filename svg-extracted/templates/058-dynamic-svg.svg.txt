@@ -1,0 +1,1 @@
+<svg viewBox="0 0 100 100" class="${Jb(e).join(` `)}" aria-hidden="true">${n}${POe(e,t)}</svg>

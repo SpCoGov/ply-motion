@@ -1,0 +1,41 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "PlyMotion",
+  "version": "0.1.0",
+  "identifier": "studio.plymotion.app",
+  "build": {
+    "beforeDevCommand": "pnpm frontend:dev",
+    "beforeBuildCommand": "pnpm frontend:build",
+    "devUrl": "http://127.0.0.1:4173",
+    "frontendDist": "dist"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "PlyMotion · 动画工作台",
+        "width": 1440,
+        "height": 960,
+        "minWidth": 900,
+        "minHeight": 700,
+        "backgroundColor": "#111715",
+        "dragDropEnabled": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self' blob:; connect-src 'self' data: ipc: http://ipc.localhost",
+      "devCsp": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self' blob:; connect-src 'self' data: ipc: http://ipc.localhost ws://127.0.0.1:4173 http://127.0.0.1:4173"
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": [
+      "nsis"
+    ],
+    "icon": [
+      "icons/icon.ico"
+    ],
+    "license": "Apache-2.0",
+    "shortDescription": "国际象棋棋谱与着法分析"
+  }
+}

@@ -1,0 +1,11 @@
+<g id="miss">
+<rect
+x="3"
+y="7.6666651"
+width="12"
+height="2.6666701"
+rx="0.33333299"
+fill="white"
+style="fill:#ffffff;fill-opacity:1"
+id="rect1" />
+  </g>

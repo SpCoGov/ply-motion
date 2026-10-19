@@ -1,0 +1,33 @@
+# Dependencies and build output
+/node_modules/
+/.pnpm-store/
+/.pnpm-patches/
+/target/
+/dist/
+/gen/
+*.tsbuildinfo
+
+# Test and demo output
+/test-results/
+/artifacts/
+/coverage/
+
+# Locally downloaded assets
+/web/assets/chesscom/
+
+# Local environment (keep example files)
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Logs and editor temporary files
+*.log
+*.swp
+*.swo
+*~
+
+# OS metadata
+.DS_Store
+Thumbs.db
+Desktop.ini

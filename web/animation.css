@@ -1,0 +1,24 @@
+.motion-controls{display:flex;align-items:center;gap:9px;margin:12px 0 0 35px;flex-wrap:wrap;font-size:11px;color:var(--muted)}
+.motion-controls label{display:flex;align-items:center;gap:4px}.motion-controls input{accent-color:var(--accent)}
+.motion-controls button,.motion-controls select{padding:5px 8px;font-size:11px}.motion-controls #motionPhase{margin-left:auto;font-size:10px}
+.motion-piece{position:absolute;width:11.25%;height:11.25%;object-fit:contain;z-index:7;pointer-events:none;user-select:none;transform-origin:50% 75%;filter:drop-shadow(0 2px 1px #0003);will-change:transform,opacity}
+.motion-piece.motion-victim{z-index:6;transform-origin:center}
+.motion-active .pc{transform-origin:50% 75%}
+.motion-active .badge{z-index:8}
+.nag-badge .original-icon{position:relative;z-index:1;filter:drop-shadow(0 0 .075em var(--nag-color))}
+.nag-ring,.nag-halo{position:absolute;border-radius:50%;pointer-events:none;color:var(--nag-color)}
+.nag-ring{inset:-.05em;border:.025em solid currentColor;box-shadow:0 0 .0625em currentColor,inset 0 0 .05em currentColor}
+.nag-halo{inset:-80%;background:radial-gradient(circle,currentColor,transparent 70%)}
+.motion-active .nag-particle-anchor{padding:0;border:0;box-shadow:none;pointer-events:none;z-index:9}
+.nag-particle{position:absolute;left:50%;top:50%;width:.055em;height:.055em;margin:-.0275em;border-radius:50%;background:#fff;color:var(--nag-color);box-shadow:0 0 .07em currentColor;pointer-events:none}
+.sq{--attack-fill:#ff9275;--defense-fill:#78b0f0;--xray-fill:#ecb199}
+.sq.l{--attack-fill:#ffc7b6;--defense-fill:#b7d9ff;--xray-fill:#ffdfd1}
+.move-highlight,.relation-flash{position:absolute;inset:0;pointer-events:none;z-index:0}
+.relation-flash.defense-path{background:var(--defense-fill)}
+.relation-flash.attack-path{background:var(--attack-fill)}
+.relation-flash.xray-path{background:var(--xray-fill)}
+.relation-flash.under-attack{background:#ff3b20}
+/* Animated highlight layers crossfade; defense can cover them without gaps. */
+.motion-active .sq.hl::after,.sq.hl .attack-path,.sq.hl .xray-path{display:none}
+.motion-active .badge.status-win{filter:drop-shadow(0 0 .075em #ffd55e80)}
+@media(max-width:760px){.motion-controls{gap:7px}.motion-controls #motionPhase{width:100%;margin-left:0}}
