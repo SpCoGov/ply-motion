@@ -90,17 +90,24 @@ fn write_project(path: &Path, content: &str) -> Result<(), String> {
 }
 
 #[tauri::command]
-pub async fn open_project(app: tauri::AppHandle) -> Result<Option<OpenedProject>, String> {
+pub async fn open_project(
+    app: tauri::AppHandle,
+    path: Option<String>,
+) -> Result<Option<OpenedProject>, String> {
     tauri::async_runtime::spawn_blocking(move || {
-        let Some(file) = app
-            .dialog()
-            .file()
-            .add_filter("PlyMotion 工程", &["plymotion"])
-            .blocking_pick_file()
-        else {
-            return Ok(None);
+        let path = if let Some(path) = path {
+            PathBuf::from(path)
+        } else {
+            let Some(file) = app
+                .dialog()
+                .file()
+                .add_filter("PlyMotion 工程", &["plymotion"])
+                .blocking_pick_file()
+            else {
+                return Ok(None);
+            };
+            file.into_path().map_err(|e| e.to_string())?
         };
-        let path = file.into_path().map_err(|e| e.to_string())?;
         let content = read_project_with(&path, |relative| {
             let file = app
                 .dialog()
@@ -118,6 +125,63 @@ pub async fn open_project(app: tauri::AppHandle) -> Result<Option<OpenedProject>
     })
     .await
     .map_err(|e| e.to_string())?
+}
+
+#[cfg(windows)]
+pub fn register_file_drop(app: &tauri::App) -> tauri::Result<()> {
+    use tauri::Manager;
+    use webview2_com::{
+        Microsoft::Web::WebView2::Win32::{
+            ICoreWebView2File, ICoreWebView2WebMessageReceivedEventArgs2,
+        },
+        WebMessageReceivedEventHandler, take_pwstr,
+    };
+    use windows_core::{Interface, PWSTR};
+
+    let Some(window) = app.get_webview_window("main") else {
+        return Ok(());
+    };
+    let target = window.clone();
+    // Native Tauri file drops disable Dockview's HTML5 panel dragging on Windows.
+    window.with_webview(move |webview| unsafe {
+        let install = || -> windows_core::Result<()> {
+            let core = webview.controller().CoreWebView2()?;
+            let mut token = 0;
+            core.add_WebMessageReceived(
+                &WebMessageReceivedEventHandler::create(Box::new(move |_, args| {
+                    let Some(args) = args else { return Ok(()) };
+                    let mut message = PWSTR::null();
+                    args.TryGetWebMessageAsString(&mut message)?;
+                    let message = take_pwstr(message);
+                    if !serde_json::from_str::<serde_json::Value>(&message).ok()
+                        .is_some_and(|v| v["type"] == "plymotion-file-drop")
+                    {
+                        return Ok(());
+                    }
+                    let path = (|| -> windows_core::Result<String> {
+                        let objects = args.cast::<ICoreWebView2WebMessageReceivedEventArgs2>()?
+                            .AdditionalObjects()?;
+                        let file = objects.GetValueAtIndex(0)?.cast::<ICoreWebView2File>()?;
+                        let mut path = PWSTR::null();
+                        file.Path(&mut path)?;
+                        Ok(take_pwstr(path))
+                    })();
+                    let detail = match path {
+                        Ok(path) => serde_json::json!({ "path": path }),
+                        Err(error) => serde_json::json!({ "error": error.to_string() }),
+                    };
+                    let _ = target.eval(&format!(
+                        "window.dispatchEvent(new CustomEvent('plymotion-file-drop', {{detail: {detail}}}))"
+                    ));
+                    Ok(())
+                })),
+                &mut token,
+            )
+        };
+        if let Err(error) = install() {
+            eprintln!("无法启用工程文件拖入：{error}");
+        }
+    })
 }
 
 #[tauri::command]

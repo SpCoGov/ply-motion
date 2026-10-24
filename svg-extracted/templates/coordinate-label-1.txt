@@ -1,5 +1,0 @@
-<text 
-          x="${e.x}" 
-          y="${e.y}" 
-          ${e.fontSize?`font-size="${e.fontSize}"`:``} 
-          class="coordinate-${e.color}">${e.text}</text>
