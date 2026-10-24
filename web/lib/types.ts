@@ -93,6 +93,7 @@ export type SceneOptions = { flip?: boolean; chesscom?: boolean; project?: Proje
 
 declare global {
   interface Window {
+    chrome?: { webview?: { postMessageWithAdditionalObjects?(message: unknown, objects: File[]): void } };
     __TAURI__?: { core: { invoke<T = unknown>(command: string, args?: Record<string, unknown> | ArrayBuffer | Uint8Array, options?: { headers: Record<string, string> }): Promise<T> } };
   }
 }

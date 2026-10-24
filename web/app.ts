@@ -715,12 +715,12 @@ async function openProjectContent(content: string, path: string | null, name: st
   loadGame(parsePgn(project.pgn), project, path, name, false);
   message('工程已打开，分析与动画快照已恢复。');
 }
-export async function openCurrentProject() {
+export async function openCurrentProject(path: string | null = null) {
   if (state.fileBusy) return;
   if (!window.__TAURI__) { $('projectFile').click(); return; }
   state.fileBusy = true; notifyEditor();
   try {
-    const file = await window.__TAURI__.core.invoke<{ content: string; path: string } | null>('open_project');
+    const file = await window.__TAURI__.core.invoke<{ content: string; path: string } | null>('open_project', { path });
     if (file) await openProjectContent(file.content, file.path, file.path.split(/[\\/]/).at(-1)!);
   } catch (caught) { const error = caught instanceof Error ? caught : new Error(String(caught)); message(`打开工程失败：${error.message || error}`); }
   finally { state.fileBusy = false; notifyEditor(); }
@@ -788,8 +788,7 @@ $('importForm').onsubmit = async event => {
   catch (caught) { const error = caught instanceof Error ? caught : new Error(String(caught)); $('importError').textContent = '导入失败：' + error.message; }
   finally { state.fileBusy = false; notifyEditor(); }
 };
-$('projectFile').onchange = async event => {
-  const file = (event.target as HTMLInputElement).files![0]; (event.target as HTMLInputElement).value = '';
+async function openProjectFile(file: File | undefined) {
   if (!file || state.fileBusy) return;
   state.fileBusy = true; notifyEditor();
   try {
@@ -797,7 +796,37 @@ $('projectFile').onchange = async event => {
     await openProjectContent(await file.text(), null, file.name);
   } catch (caught) { const error = caught instanceof Error ? caught : new Error(String(caught)); message(`打开工程失败：${error.message || error}`); }
   finally { state.fileBusy = false; notifyEditor(); }
+}
+$('projectFile').onchange = event => {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0]; input.value = '';
+  void openProjectFile(file);
 };
+window.addEventListener('dragover', event => {
+  if (event.dataTransfer?.types.includes('Files')) {
+    event.preventDefault(); event.stopPropagation();
+    event.dataTransfer.dropEffect = state.fileBusy ? 'none' : 'copy';
+  }
+}, true);
+window.addEventListener('drop', event => {
+  if (!event.dataTransfer?.types.includes('Files')) return;
+  event.preventDefault(); event.stopPropagation();
+  const files = [...event.dataTransfer.files];
+  if (files.length !== 1 || !/\.plymotion$/i.test(files[0].name)) {
+    message('请一次拖入一个 .plymotion 工程文件。'); return;
+  }
+  if (state.fileBusy) { message('正在处理工程文件，请稍后再拖入。'); return; }
+  const webview = window.chrome?.webview;
+  if (window.__TAURI__ && webview?.postMessageWithAdditionalObjects) {
+    try { webview.postMessageWithAdditionalObjects(JSON.stringify({ type: 'plymotion-file-drop' }), files); }
+    catch (error) { message(`打开工程失败：${error}`); }
+  } else void openProjectFile(files[0]);
+}, true);
+window.addEventListener('plymotion-file-drop', event => {
+  const { path, error } = (event as CustomEvent<{ path?: string; error?: string }>).detail;
+  if (error) message(`打开工程失败：${error}`);
+  else if (typeof path === 'string') void openCurrentProject(path);
+});
 $('analyze').onclick = analyze;
 $('flip').onclick = () => { stopPlaying(); state.flip = !state.flip; updateProject({ ...state.project, output: { ...state.project.output, flip: state.flip } }); refreshPreview(); };
 for (const [id, target] of [['first', () => 0], ['prev', () => state.ply - 1], ['next', () => state.ply + 1], ['last', () => rows().length]] as const) {

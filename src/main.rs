@@ -1,8 +1,8 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod engine;
-mod media;
 mod mcp;
+mod media;
 mod preview;
 mod project;
 mod video;
@@ -14,6 +14,11 @@ fn main() {
         .manage(project::ProjectState::default())
         .manage(engine::EngineState::default())
         .manage(mcp::McpState::default())
+        .setup(|app| {
+            #[cfg(windows)]
+            project::register_file_drop(app)?;
+            Ok(())
+        })
         .on_window_event(|window, event| {
             use tauri::Manager;
             if window.label() != "main" {
